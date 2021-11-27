@@ -15,12 +15,14 @@ jobs:
         
     steps:
       - name: Setup FFmpeg
-        if: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
+        if: matrix.ffmpeg == 'with-ffmpeg' && (runner.os == 'windows' || runner.os == 'macos')
         uses: FedericoCarboni/setup-ffmpeg@v1
         
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
-        
+        with:
+          with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
+          
       - name: Test yt-dlp installed by setup-yt-dlp
         run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
         
