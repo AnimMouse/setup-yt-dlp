@@ -1,5 +1,4 @@
 name: Setup yt-dlp
-author: AnimMouse
 description: Setup/Install yt-dlp (a youtube-dl fork) for GitHub Actions
 branding:
   icon: play-circle
@@ -16,15 +15,21 @@ runs:
     - name: Install yt-dlp/FFmpeg-Builds for Linux
       if: inputs.with-ffmpeg == 'true' && runner.os == 'linux'
       shell: bash
+      working-directory: ${{ runner.temp }}
       run: |
         curl -s https://api.github.com/repos/yt-dlp/FFmpeg-Builds/releases/latest \
         | grep "browser_download_url.*linux64-gpl-*.tar.xz" \
         | cut -d : -f 2,3 \
         | tr -d \" \
-        | aria2c -x 16 -o "ffmpeg-yt-dlp-linux64-gpl.tar.xz" $(cat)
-        tar -xf "ffmpeg-yt-dlp-linux64-gpl.tar.xz" --strip-components 2 --no-anchored ffmpeg
+        | aria2c -x 16 -o ffmpeg-yt-dlp-linux64-gpl.tar.xz $(cat)
+        tar -xf ffmpeg-yt-dlp-linux64-gpl.tar.xz --strip-components 2 --no-anchored ffmpeg
         mv ffmpeg /usr/local/bin/
+        rm ffmpeg-yt-dlp-linux64-gpl.tar.xz
         
+    - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for Windows and MacOS
+      if: inputs.with-ffmpeg == 'true' && (runner.os == 'windows' || runner.os == 'macos')
+      uses: FedericoCarboni/setup-ffmpeg@v1
+      
     - name: Install yt-dlp using pip3
       shell: bash
       run: pip3 install yt-dlp

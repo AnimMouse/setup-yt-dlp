@@ -14,10 +14,6 @@ jobs:
         ffmpeg: [without-ffmpeg, with-ffmpeg]
         
     steps:
-      - name: Setup FFmpeg
-        if: matrix.ffmpeg == 'with-ffmpeg' && (runner.os == 'windows' || runner.os == 'macos')
-        uses: FedericoCarboni/setup-ffmpeg@v1
-        
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
