@@ -3,8 +3,6 @@ Setup [yt-dlp](https://github.com/yt-dlp/yt-dlp) (a [youtube-dl](https://github.
 
 This action installs [yt-dlp](https://github.com/yt-dlp/yt-dlp) for use in actions by installing it using pip3.
 
-This action only works on Ubuntu virtual environments as [conditionals](https://github.com/actions/runner/issues/646) does not work on [composite](https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action) yet.
-
 ## Usage
 To use `yt-dlp`, run this action before `yt-dlp`.
 

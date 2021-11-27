@@ -1,12 +1,12 @@
-name: "Setup yt-dlp"
-description: "Setup/Install yt-dlp (a youtube-dl fork) for GitHub Actions"
+name: Setup yt-dlp
+description: Setup/Install yt-dlp (a youtube-dl fork) for GitHub Actions
 branding:
-  icon: "play-circle"
-  color: "red"
+  icon: play-circle
+  color: red
   
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Install yt-dlp using pip3
       shell: bash
-      run: sudo -H pip3 install yt-dlp
+      run: pip3 install yt-dlp
