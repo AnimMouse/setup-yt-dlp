@@ -9,10 +9,17 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ffmpeg: [without-ffmpeg, with-ffmpeg]
-        downloader: [aria2c, native, wget, curl]
+        downloader: [aria2c, native, wget, curl, ffmpeg]
+        exclude:
+          - ffmpeg: without-ffmpeg
+            downloader: ffmpeg
+          - os: windows-latest
+            downloader: curl
+            
     steps:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
