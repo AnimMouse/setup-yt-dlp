@@ -30,6 +30,6 @@ runs:
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'windows' || runner.os == 'macos')
       uses: FedericoCarboni/setup-ffmpeg@v1
       
-    - name: Install yt-dlp using pip3
+    - name: Install yt-dlp using pipx
       shell: bash
-      run: pip3 install yt-dlp
+      run: pipx install yt-dlp
