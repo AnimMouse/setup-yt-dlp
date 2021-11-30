@@ -27,7 +27,7 @@ jobs:
           with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
           
       - name: Test yt-dlp installed by setup-yt-dlp
-        run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc --downloader ${{ matrix.downloader }}
+        run: yt-dlp --downloader ${{ matrix.downloader }} --restrict-filenames https://www.youtube.com/watch?v=BaW_jenozKc
         
       - name: List files
         run: ls

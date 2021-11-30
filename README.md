@@ -28,7 +28,7 @@ steps:
 ```
 
 For Linux, this will install [yt-dlp/FFmpeg-Builds](https://github.com/yt-dlp/FFmpeg-Builds) with some patches necessary for smooth integration with yt-dlp.\
-For Windows and MacOS, this will install FFmpeg using [FedericoCarboni/setup-ffmpeg](https://github.com/FedericoCarboni/setup-ffmpeg).
+For Windows and macOS, this will install FFmpeg using [FedericoCarboni/setup-ffmpeg](https://github.com/FedericoCarboni/setup-ffmpeg).
 
 If you already installed FFmpeg in GitHub Runners, no need to set `with-ffmpeg` to `true`.
 
@@ -42,5 +42,5 @@ steps:
     with:
       with-ffmpeg: true
       
-  - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc --downloader aria2c
+  - run: yt-dlp --downloader aria2c https://www.youtube.com/watch?v=BaW_jenozKc
 ```

@@ -26,7 +26,7 @@ runs:
         mv ffmpeg /usr/local/bin/
         rm ffmpeg-yt-dlp-linux64-gpl.tar.xz
         
-    - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for Windows and MacOS
+    - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for Windows and macOS
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'windows' || runner.os == 'macos')
       uses: FedericoCarboni/setup-ffmpeg@v1
       
