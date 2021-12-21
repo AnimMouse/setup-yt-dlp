@@ -2,8 +2,8 @@ name: Test setup-yt-dlp
 on:
   push:
     paths:
-      - action.yml
-      - .github/workflows/test.yml
+      - action.yaml
+      - .github/workflows/test.yaml
       
 jobs:
   test:
