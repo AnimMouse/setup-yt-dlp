@@ -9,7 +9,7 @@ To use `yt-dlp`, run this action before `yt-dlp`.
 ```yml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v2
+    uses: AnimMouse/setup-yt-dlp@v1
     
   - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
 ```
@@ -20,7 +20,7 @@ To improve yt-dlp's handling of formats, like merging `bestvideo+bestaudio` inst
 ```yml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v2
+    uses: AnimMouse/setup-yt-dlp@v1
     with:
       with-ffmpeg: true
       
@@ -38,7 +38,7 @@ It is recommended to use [aria2](https://aria2.github.io) as the downloader for 
 ```yml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v2
+    uses: AnimMouse/setup-yt-dlp@v1
     with:
       with-ffmpeg: true
       
