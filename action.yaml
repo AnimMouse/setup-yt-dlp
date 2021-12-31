@@ -12,19 +12,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Install yt-dlp/FFmpeg-Builds for Linux
+    - name: Download yt-dlp/FFmpeg-Builds for Linux
       if: inputs.with-ffmpeg == 'true' && runner.os == 'linux'
       shell: bash
       working-directory: ${{ runner.temp }}
-      run: |
-        curl -s https://api.github.com/repos/yt-dlp/FFmpeg-Builds/releases/latest \
-        | grep "browser_download_url.*linux64-gpl-*.tar.xz" \
-        | cut -d : -f 2,3 \
-        | tr -d \" \
-        | aria2c -x 16 -o ffmpeg-yt-dlp-linux64-gpl.tar.xz $(cat)
-        tar -xf ffmpeg-yt-dlp-linux64-gpl.tar.xz --strip-components 2 --no-anchored ffmpeg
-        mv ffmpeg /usr/local/bin/
-        rm ffmpeg-yt-dlp-linux64-gpl.tar.xz
+      run: $GITHUB_ACTION_PATH/scripts/Download-yt-dlp-FFmpeg-Linux.sh
+      
+    - name: Install yt-dlp/FFmpeg-Builds on tool cache
+      if: inputs.with-ffmpeg == 'true' && runner.os == 'linux'
+      uses: AnimMouse/tool-cache@v1
+      with:
+        folder_name: yt-dlp-ffmpeg
         
     - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for Windows and macOS
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'windows' || runner.os == 'macos')

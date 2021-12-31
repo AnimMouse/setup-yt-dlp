@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - action.yaml
+      - scripts/**
       - .github/workflows/test.yaml
       
 jobs:
