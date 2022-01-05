@@ -6,7 +6,7 @@ This action installs [yt-dlp](https://github.com/yt-dlp/yt-dlp) for use in actio
 ## Usage
 To use `yt-dlp`, run this action before `yt-dlp`.
 
-```yml
+```yaml
 steps:
   - name: Setup yt-dlp
     uses: AnimMouse/setup-yt-dlp@v1
@@ -17,7 +17,7 @@ steps:
 ## FFmpeg
 To improve yt-dlp's handling of formats, like merging `bestvideo+bestaudio` instead of just using `best`, it is recommended to install [FFmpeg](https://ffmpeg.org) by setting `with-ffmpeg` to `true`.
 
-```yml
+```yaml
 steps:
   - name: Setup yt-dlp
     uses: AnimMouse/setup-yt-dlp@v1
@@ -35,7 +35,7 @@ If you already installed FFmpeg in GitHub Runners, no need to set `with-ffmpeg` 
 ## aria2
 It is recommended to use [aria2](https://aria2.github.io) as the downloader for yt-dlp, this will improve the downloading process and [aria2 is already preinstalled](https://github.com/actions/virtual-environments/issues/970) in GitHub actions.
 
-```yml
+```yaml
 steps:
   - name: Setup yt-dlp
     uses: AnimMouse/setup-yt-dlp@v1
