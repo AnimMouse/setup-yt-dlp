@@ -22,7 +22,7 @@ runs:
       if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows'
       shell: pwsh
       working-directory: ${{ runner.temp }}
-      run: $GITHUB_ACTION_PATH/scripts/Download-yt-dlp-FFmpeg-Windows.ps1
+      run: '& $env:GITHUB_ACTION_PATH\scripts\Download-yt-dlp-FFmpeg-Windows.ps1'
       
     - name: Install yt-dlp/FFmpeg-Builds on tool cache
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
