@@ -28,7 +28,11 @@ jobs:
           with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
           
       - name: Test yt-dlp installed by setup-yt-dlp
-        run: yt-dlp --downloader ${{ matrix.downloader }} --restrict-filenames https://www.youtube.com/watch?v=BaW_jenozKc
+        run: yt-dlp --downloader ${{ matrix.downloader }} -P yt-dlp-test-video/ https://www.youtube.com/watch?v=BaW_jenozKc
         
-      - name: List files
-        run: ls
+      - name: Upload yt-dlp test video
+        uses: actions/upload-artifact@v2
+        with:
+          name: yt-dlp ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
+          path: yt-dlp-test-video/
+          if-no-files-found: error
