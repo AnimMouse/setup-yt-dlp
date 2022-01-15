@@ -27,8 +27,8 @@ steps:
   - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
 ```
 
-For Linux, this will install [yt-dlp/FFmpeg-Builds](https://github.com/yt-dlp/FFmpeg-Builds) with some patches necessary for smooth integration with yt-dlp.\
-For Windows and macOS, this will install FFmpeg using [FedericoCarboni/setup-ffmpeg](https://github.com/FedericoCarboni/setup-ffmpeg).
+For Linux & Windows, this will install [yt-dlp/FFmpeg-Builds](https://github.com/yt-dlp/FFmpeg-Builds) with some patches necessary for smooth integration with yt-dlp using using [AnimMouse/tool-cache](https://github.com/AnimMouse/tool-cache).\
+For macOS, this will install FFmpeg using [FedericoCarboni/setup-ffmpeg](https://github.com/FedericoCarboni/setup-ffmpeg).
 
 If you already installed FFmpeg in GitHub Runners, no need to set `with-ffmpeg` to `true`.
 

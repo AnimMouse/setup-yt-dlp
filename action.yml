@@ -13,19 +13,25 @@ runs:
   using: composite
   steps:
     - name: Download yt-dlp/FFmpeg-Builds for Linux
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'linux'
+      if: inputs.with-ffmpeg == 'true' && runner.os == 'Linux'
       shell: bash
       working-directory: ${{ runner.temp }}
       run: $GITHUB_ACTION_PATH/scripts/Download-yt-dlp-FFmpeg-Linux.sh
       
+    - name: Download yt-dlp/FFmpeg-Builds for Windows
+      if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows'
+      shell: pwsh
+      working-directory: ${{ runner.temp }}
+      run: $GITHUB_ACTION_PATH/scripts/Download-yt-dlp-FFmpeg-Windows.ps1
+      
     - name: Install yt-dlp/FFmpeg-Builds on tool cache
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'linux'
+      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
       uses: AnimMouse/tool-cache@v1
       with:
         folder_name: yt-dlp-ffmpeg
         
-    - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for Windows and macOS
-      if: inputs.with-ffmpeg == 'true' && (runner.os == 'windows' || runner.os == 'macos')
+    - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for macOS
+      if: inputs.with-ffmpeg == 'true' && runner.os == 'macOS'
       uses: FedericoCarboni/setup-ffmpeg@v1
       
     - name: Install yt-dlp using pipx
