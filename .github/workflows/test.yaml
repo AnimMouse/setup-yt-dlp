@@ -14,12 +14,10 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ffmpeg: [without-ffmpeg, with-ffmpeg]
-        downloader: [aria2c, native, wget, curl, ffmpeg]
+        downloader: [aria2c, native]
         exclude:
-          - ffmpeg: without-ffmpeg
-            downloader: ffmpeg
-          - os: windows-latest
-            downloader: curl
+          - os: macos-latest
+            ffmpeg: with-ffmpeg
             
     steps:
       - name: Setup yt-dlp using setup-yt-dlp

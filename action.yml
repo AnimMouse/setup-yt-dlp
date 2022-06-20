@@ -30,10 +30,6 @@ runs:
       with:
         folder_name: yt-dlp-ffmpeg
         
-    - name: Setup FFmpeg using FedericoCarboni/setup-ffmpeg for macOS
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'macOS'
-      uses: FedericoCarboni/setup-ffmpeg@v1
-      
     - name: Install yt-dlp using pipx
       shell: bash
       run: pipx install yt-dlp
