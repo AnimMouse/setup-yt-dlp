@@ -31,7 +31,7 @@ jobs:
         run: yt-dlp --downloader ${{ matrix.downloader }} -P yt-dlp-test-video/ https://www.youtube.com/watch?v=BaW_jenozKc
         
       - name: Upload yt-dlp test video
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: yt-dlp ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
           path: yt-dlp-test-video/
