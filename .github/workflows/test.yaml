@@ -14,6 +14,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ffmpeg: [without-ffmpeg, with-ffmpeg]
+        version: [latest, 2022.02.04]
         downloader: [aria2c, native]
         exclude:
           - os: macos-latest
@@ -24,13 +25,14 @@ jobs:
         uses: AnimMouse/setup-yt-dlp@main
         with:
           with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
+          version: ${{ matrix.version }}
           
       - name: Test yt-dlp installed by setup-yt-dlp
-        run: yt-dlp --downloader ${{ matrix.downloader }} -P yt-dlp-test-video/ https://www.youtube.com/watch?v=BaW_jenozKc
+        run: yt-dlp --downloader ${{ matrix.downloader }} -P yt-dlp-test-video https://www.youtube.com/watch?v=BaW_jenozKc
         
       - name: Upload yt-dlp test video
         uses: actions/upload-artifact@v3
         with:
-          name: yt-dlp ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
-          path: yt-dlp-test-video/
+          name: yt-dlp ${{ matrix.version }} ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
+          path: yt-dlp-test-video
           if-no-files-found: error

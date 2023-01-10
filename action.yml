@@ -6,8 +6,13 @@ branding:
 inputs:
   with-ffmpeg:
     description: Install FFmpeg for yt-dlp
-    required: false
     default: false
+  version:
+    description: yt-dlp version
+    default: latest
+  token:
+    description: GitHub token to avoid API rate limiting
+    default: ${{ github.token }}
     
 runs:
   using: composite
@@ -16,13 +21,13 @@ runs:
       if: inputs.with-ffmpeg == 'true' && runner.os == 'Linux'
       shell: bash
       working-directory: ${{ runner.temp }}
-      run: $GITHUB_ACTION_PATH/scripts/Download-yt-dlp-FFmpeg-Linux.sh
+      run: $GITHUB_ACTION_PATH/scripts/yt-dlp-ffmpeg/Linux.sh
       
     - name: Download yt-dlp/FFmpeg-Builds for Windows
       if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows'
       shell: pwsh
       working-directory: ${{ runner.temp }}
-      run: '& $env:GITHUB_ACTION_PATH\scripts\Download-yt-dlp-FFmpeg-Windows.ps1'
+      run: '& $env:GITHUB_ACTION_PATH\scripts\yt-dlp-ffmpeg\Windows.ps1'
       
     - name: Install yt-dlp/FFmpeg-Builds on tool cache
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
@@ -30,6 +35,41 @@ runs:
       with:
         folder_name: yt-dlp-ffmpeg
         
-    - name: Install yt-dlp using pipx
+    - name: Get yt-dlp version for Unix-like
+      id: version-unix-like
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: pipx install yt-dlp
+      run: $GITHUB_ACTION_PATH/scripts/version/Unix-like.sh
+      env:
+        version: ${{ inputs.version }}
+        GITHUB_TOKEN: ${{ inputs.token }}
+        
+    - name: Get yt-dlp version for Windows
+      id: version-windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\version\Windows.ps1'
+      env:
+        version: ${{ inputs.version }}
+        GITHUB_TOKEN: ${{ inputs.token }}
+        
+    - name: Download yt-dlp for Unix-like
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      working-directory: ${{ runner.temp }}
+      run: $GITHUB_ACTION_PATH/scripts/download/Unix-like.sh
+      env:
+        version: ${{ steps.version-unix-like.outputs.version }}
+        
+    - name: Download yt-dlp for Windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      working-directory: ${{ runner.temp }}
+      run: '& $env:GITHUB_ACTION_PATH\scripts\download\Windows.ps1'
+      env:
+        version: ${{ steps.version-windows.outputs.version }}
+        
+    - name: Install yt-dlp on tool cache
+      uses: AnimMouse/tool-cache@v1
+      with:
+        folder_name: yt-dlp
