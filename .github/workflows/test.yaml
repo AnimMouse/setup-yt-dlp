@@ -27,7 +27,10 @@ jobs:
           with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
           version: ${{ matrix.version }}
           
-      - name: Test yt-dlp installed by setup-yt-dlp
+      - name: Test yt-dlp by checking version
+        run: yt-dlp --version
+        
+      - name: Test yt-dlp by downloading a test video
         run: yt-dlp --downloader ${{ matrix.downloader }} -P yt-dlp-test-video https://www.youtube.com/watch?v=BaW_jenozKc
         
       - name: Upload yt-dlp test video
