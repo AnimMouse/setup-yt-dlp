@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ffmpeg: [without-ffmpeg, with-ffmpeg]
-        version: [latest, 2022.02.04]
+        version: [latest, "${{ vars.SPECIFIED_VERSION }}"]
         downloader: [aria2c, native]
         exclude:
           - os: macos-latest

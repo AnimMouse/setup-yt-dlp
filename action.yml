@@ -33,7 +33,7 @@ runs:
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
       uses: AnimMouse/tool-cache@v1
       with:
-        folder_name: yt-dlp-ffmpeg
+        folder_name: yt-dlp-FFmpeg
         
     - name: Get yt-dlp version for Unix-like
       id: version-unix-like
