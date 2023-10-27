@@ -5,7 +5,7 @@ branding:
   color: red
 inputs:
   with-ffmpeg:
-    description: Install FFmpeg for yt-dlp
+    description: Install yt-dlp/FFmpeg-Builds for yt-dlp
     default: false
   version:
     description: yt-dlp version
@@ -18,7 +18,7 @@ runs:
   using: composite
   steps:
     - name: Download yt-dlp/FFmpeg-Builds for Linux
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'Linux'
+      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'macOS')
       shell: bash
       working-directory: ${{ runner.temp }}
       run: $GITHUB_ACTION_PATH/scripts/yt-dlp-ffmpeg/Linux.sh
