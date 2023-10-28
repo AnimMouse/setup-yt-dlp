@@ -17,7 +17,7 @@ steps:
 ```
 
 ## FFmpeg
-To improve yt-dlp's handling of formats, like merging `bestvideo+bestaudio` instead of just using `best`, it is recommended to install [FFmpeg](https://ffmpeg.org) by setting `with-ffmpeg` to `true`.
+To improve yt-dlp's handling of formats, like [merging `bestvideo+bestaudio` instead of just using `best`](https://github.com/yt-dlp/yt-dlp/#strongly-recommended), it is recommended to install [FFmpeg](https://ffmpeg.org) by setting `with-ffmpeg` to `true`.
 
 ```yaml
 steps:
@@ -30,7 +30,7 @@ steps:
 ```
 
 For Linux & Windows, this will install [yt-dlp/FFmpeg-Builds](https://github.com/yt-dlp/FFmpeg-Builds) with some patches necessary for smooth integration with yt-dlp using [AnimMouse/tool-cache](https://github.com/AnimMouse/tool-cache).\
-For macOS, you need to run [AnimMouse/setup-ffmpeg](https://github.com/AnimMouse/setup-ffmpeg) as the built-in FFmpeg installer for macOS has been removed.
+For macOS, you need to run [AnimMouse/setup-ffmpeg](https://github.com/AnimMouse/setup-ffmpeg) first as yt-dlp/FFmpeg-Builds currently does not have macOS builds.
 
 If you already installed FFmpeg in GitHub runners, no need to set `with-ffmpeg` to `true`.
 
