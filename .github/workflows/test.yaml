@@ -5,6 +5,11 @@ on:
       - action.yml
       - scripts/**
       - .github/workflows/test.yaml
+  pull_request:
+    paths:
+      - action.yml
+      - scripts/**
+      - .github/workflows/test.yaml
       
 jobs:
   test:
@@ -27,6 +32,10 @@ jobs:
           with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
           version: ${{ matrix.version }}
           
+      - name: Test yt-dlp-FFmpeg by checking version
+        if: matrix.ffmpeg == 'with-ffmpeg'
+        run: ffmpeg -version
+        
       - name: Test yt-dlp by checking version
         run: yt-dlp --version
         
