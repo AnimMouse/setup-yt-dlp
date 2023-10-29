@@ -21,7 +21,6 @@ runs:
       id: yt-dlp-ffmpeg-release-id-unix-like
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'macOS')
       shell: bash
-      working-directory: ${{ runner.temp }}
       run: $GITHUB_ACTION_PATH/scripts/yt-dlp-ffmpeg/release-id/Linux.sh
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
@@ -30,7 +29,6 @@ runs:
       id: yt-dlp-ffmpeg-release-id-windows
       if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows'
       shell: pwsh
-      working-directory: ${{ runner.temp }}
       run: '& $env:GITHUB_ACTION_PATH\scripts\yt-dlp-ffmpeg\release-id\Windows.ps1'
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
