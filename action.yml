@@ -36,7 +36,7 @@ runs:
     - name: Restore yt-dlp/FFmpeg-Builds cache
       id: yt-dlp-FFmpeg-cache
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
         key: yt-dlp-FFmpeg-${{ steps.yt-dlp-ffmpeg-release-id-unix-like.outputs.release_id || steps.yt-dlp-ffmpeg-release-id-windows.outputs.release_id }}-${{ runner.os }}
@@ -62,7 +62,7 @@ runs:
         
     - name: Save yt-dlp/FFmpeg-Builds cache
       if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows') && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
         key: yt-dlp-FFmpeg-${{ steps.yt-dlp-ffmpeg-release-id-unix-like.outputs.release_id || steps.yt-dlp-ffmpeg-release-id-windows.outputs.release_id }}-${{ runner.os }}
@@ -87,7 +87,7 @@ runs:
         
     - name: Restore yt-dlp cache
       id: cache
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp
         key: yt-dlp-${{ steps.version-unix-like.outputs.version || steps.version-windows.outputs.version }}-${{ runner.os }}
@@ -116,7 +116,7 @@ runs:
         
     - name: Save yt-dlp cache
       if: '! steps.cache.outputs.cache-hit'
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp
         key: yt-dlp-${{ steps.version-unix-like.outputs.version || steps.version-windows.outputs.version }}-${{ runner.os }}
