@@ -10,6 +10,9 @@ inputs:
   token_data:
     description: OAuth2 token data encoded in Base64
     default: false
+  token:
+    description: GitHub token to avoid API rate limiting
+    default: ${{ github.token }}
     
 runs:
   using: composite
