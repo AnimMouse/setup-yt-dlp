@@ -1,0 +1,37 @@
+name: Test setup-yt-dlp/oauth2
+on:
+  push:
+    paths:
+      - oauth2/action.yaml
+      - oauth2/scripts/**
+      - .github/workflows/test-oauth2.yaml
+  pull_request:
+    paths:
+      - oauth2/action.yaml
+      - oauth2/scripts/**
+      - .github/workflows/test-oauth2.yaml
+      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup yt-dlp using setup-yt-dlp
+        uses: AnimMouse/setup-yt-dlp@main
+        with:
+          with-ffmpeg: true
+          nightly: true
+          
+      - name: Setup yt-dlp-youtube-oauth2 plugin using setup-yt-dlp/oauth2
+        uses: AnimMouse/setup-yt-dlp/oauth2@main
+        with:
+          token_data: ${{ secrets.YOUTUBE_OAUTH2_TOKEN_DATA }}
+          
+      - name: Test yt-dlp by downloading a test video
+        run: yt-dlp -P yt-dlp-test-video --restrict-filenames --username oauth2 --password '' https://www.youtube.com/watch?v=BaW_jenozKc
+        
+      - name: Upload yt-dlp test video
+        uses: actions/upload-artifact@v4
+        with:
+          name: yt-dlp test video
+          path: yt-dlp-test-video
+          if-no-files-found: error
