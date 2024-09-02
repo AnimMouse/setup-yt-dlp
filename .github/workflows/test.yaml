@@ -19,11 +19,15 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ffmpeg: [without-ffmpeg, with-ffmpeg]
-        version: [latest, "${{ vars.SPECIFIED_VERSION }}"]
+        version: [latest, "${{ vars.SPECIFIED_VERSION }}", "${{ vars.SPECIFIED_VERSION_NIGHTLY }}"]
         nightly: [stable, nightly]
         exclude:
           - os: macos-latest
             ffmpeg: with-ffmpeg
+          - version: ${{ vars.SPECIFIED_VERSION }}
+            nightly: nightly
+          - version: ${{ vars.SPECIFIED_VERSION_NIGHTLY }}
+            nightly: stable
             
     steps:
       - name: Setup yt-dlp using setup-yt-dlp
