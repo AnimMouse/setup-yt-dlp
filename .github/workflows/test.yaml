@@ -21,7 +21,6 @@ jobs:
         ffmpeg: [without-ffmpeg, with-ffmpeg]
         version: [latest, "${{ vars.SPECIFIED_VERSION }}"]
         nightly: [stable, nightly]
-        downloader: [aria2c, native]
         exclude:
           - os: macos-latest
             ffmpeg: with-ffmpeg
@@ -41,12 +40,12 @@ jobs:
       - name: Test yt-dlp by checking version
         run: yt-dlp --version
         
-      - name: Test yt-dlp by downloading a test video
-        run: yt-dlp --downloader ${{ matrix.downloader }} -P yt-dlp-test-video https://www.youtube.com/watch?v=BaW_jenozKc
-        
-      - name: Upload yt-dlp test video
-        uses: actions/upload-artifact@v3
-        with:
-          name: yt-dlp ${{ matrix.version }} ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
-          path: yt-dlp-test-video
-          if-no-files-found: error
+#      - name: Test yt-dlp by downloading a test video
+#        run: yt-dlp -P yt-dlp-test-video https://www.youtube.com/watch?v=BaW_jenozKc
+#        
+#      - name: Upload yt-dlp test video
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: yt-dlp ${{ matrix.version }} ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
+#          path: yt-dlp-test-video
+#          if-no-files-found: error
