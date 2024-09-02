@@ -69,7 +69,7 @@ steps:
   - name: Setup yt-dlp-youtube-oauth2 plugin
     uses: AnimMouse/setup-yt-dlp/oauth2@v1
     with:
-      token_data: ${{ secrets.YOUTUBE_OAUTH2_TOKEN_DATA }}
+      token-data: ${{ secrets.YOUTUBE_OAUTH2_TOKEN_DATA }}
       
   - run: yt-dlp --downloader aria2c --username oauth2 --password '' https://www.youtube.com/watch?v=BaW_jenozKc
 ```
