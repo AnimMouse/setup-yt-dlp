@@ -10,6 +10,9 @@ inputs:
   version:
     description: yt-dlp version
     default: latest
+  nightly:
+    description: yt-dlp nightly
+    default: false
   token:
     description: GitHub token to avoid API rate limiting
     default: ${{ github.token }}
@@ -74,6 +77,7 @@ runs:
       run: $GITHUB_ACTION_PATH/scripts/version/Unix-like.sh
       env:
         version: ${{ inputs.version }}
+        nightly: ${{ inputs.nightly }}
         GITHUB_TOKEN: ${{ inputs.token }}
         
     - name: Get yt-dlp version for Windows
@@ -83,6 +87,7 @@ runs:
       run: '& $env:GITHUB_ACTION_PATH\scripts\version\Windows.ps1'
       env:
         version: ${{ inputs.version }}
+        nightly: ${{ inputs.nightly }}
         GITHUB_TOKEN: ${{ inputs.token }}
         
     - name: Restore yt-dlp cache
@@ -99,6 +104,7 @@ runs:
       run: $GITHUB_ACTION_PATH/scripts/download/Unix-like.sh
       env:
         version: ${{ steps.version-unix-like.outputs.version }}
+        nightly: ${{ inputs.nightly }}
         
     - name: Download yt-dlp for Windows
       if: runner.os == 'Windows' && ! steps.cache.outputs.cache-hit
@@ -107,6 +113,7 @@ runs:
       run: '& $env:GITHUB_ACTION_PATH\scripts\download\Windows.ps1'
       env:
         version: ${{ steps.version-windows.outputs.version }}
+        nightly: ${{ inputs.nightly }}
         
     - name: Install yt-dlp on tool cache
       uses: AnimMouse/tool-cache@v1
