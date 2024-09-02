@@ -64,6 +64,7 @@ steps:
     uses: AnimMouse/setup-yt-dlp@v1
     with:
       with-ffmpeg: true
+      nightly: true
       
   - name: Setup yt-dlp-youtube-oauth2 plugin
     uses: AnimMouse/setup-yt-dlp/oauth2@v1
@@ -76,12 +77,32 @@ steps:
 ### Specific version
 You can specify the version you want. By default, this action downloads the latest version if version is not specified.
 
+#### Specific stable
 ```yaml
 steps:
   - name: Setup yt-dlp
     uses: AnimMouse/setup-yt-dlp@v1
     with:
       version: 2022.02.04
+```
+
+#### Latest nightly
+```yaml
+steps:
+  - name: Setup yt-dlp
+    uses: AnimMouse/setup-yt-dlp@v1
+    with:
+      nightly: true
+```
+
+#### Specific nightly
+```yaml
+steps:
+  - name: Setup yt-dlp
+    uses: AnimMouse/setup-yt-dlp@v1
+    with:
+      version: 2024.02.04.232659
+      nightly: true
 ```
 
 ### GitHub token
