@@ -5,11 +5,6 @@ on:
       - oauth2/action.yaml
       - oauth2/scripts/**
       - .github/workflows/test-oauth2.yaml
-  pull_request:
-    paths:
-      - oauth2/action.yaml
-      - oauth2/scripts/**
-      - .github/workflows/test-oauth2.yaml
       
 jobs:
   test:
@@ -19,7 +14,6 @@ jobs:
         uses: AnimMouse/setup-yt-dlp@main
         with:
           with-ffmpeg: true
-          nightly: true
           
       - name: Setup yt-dlp-youtube-oauth2 plugin using setup-yt-dlp/oauth2
         uses: AnimMouse/setup-yt-dlp/oauth2@main
