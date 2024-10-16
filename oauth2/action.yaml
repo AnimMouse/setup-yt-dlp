@@ -7,12 +7,15 @@ inputs:
   version:
     description: yt-dlp-youtube-oauth2 version
     default: latest
-  token-data:
+  token_data:
     description: OAuth2 token data encoded in Base64
     default: false
   token:
     description: GitHub token to avoid API rate limiting
     default: ${{ github.token }}
+  token-data:
+    description: OAuth2 token data encoded in Base64 (deprecated)
+    default: false
     
 runs:
   using: composite
@@ -38,4 +41,4 @@ runs:
       shell: bash
       run: $GITHUB_ACTION_PATH/scripts/sign-in/Unix-like.sh
       env:
-        token_data: ${{ inputs.token-data }}
+        token_data: ${{ inputs.token_data || inputs.token-data }}
