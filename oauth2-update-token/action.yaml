@@ -1,0 +1,24 @@
+name: Update yt-dlp-youtube-oauth2 token
+description: Update YouTube OAuth2 token for YouTube OAuth2 yt-dlp plugin
+branding:
+  icon: play-circle
+  color: red
+inputs:
+  token_data_secret_name:
+    description: YouTube OAuth2 token data secret name on GitHub
+    default: YOUTUBE_OAUTH2_TOKEN_DATA
+  token:
+    description: GitHub personal access token that has read and write access to secrets scope to update secret
+    required: true
+    
+runs:
+  using: composite
+  steps:
+    - name: Update YouTube OAuth2 token data for Unix-like
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: base64 < ~/.cache/yt-dlp/youtube-oauth2/token_data.json | gh secret set "$token_data_secret_name"
+      env:
+        token_data_secret_name: ${{ inputs.token_data_secret_name }}
+        GITHUB_TOKEN: ${{ inputs.token }}
+        GH_REPO: ${{ github.repository }}
