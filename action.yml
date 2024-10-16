@@ -45,13 +45,13 @@ runs:
         key: yt-dlp-FFmpeg-${{ steps.yt-dlp-ffmpeg-release-id-unix-like.outputs.release_id || steps.yt-dlp-ffmpeg-release-id-windows.outputs.release_id }}-${{ runner.os }}
         
     - name: Download yt-dlp/FFmpeg-Builds for Linux
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'Linux' && (! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit || steps.yt-dlp-FFmpeg-cache.outputs.cache-hit == 'false')
+      if: inputs.with-ffmpeg == 'true' && runner.os == 'Linux' && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
       shell: bash
       working-directory: ${{ runner.temp }}
       run: $GITHUB_ACTION_PATH/scripts/yt-dlp-ffmpeg/download/Linux.sh
       
     - name: Download yt-dlp/FFmpeg-Builds for Windows
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows' && (! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit || steps.yt-dlp-FFmpeg-cache.outputs.cache-hit == 'false')
+      if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows' && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
       shell: pwsh
       working-directory: ${{ runner.temp }}
       run: '& $env:GITHUB_ACTION_PATH\scripts\yt-dlp-ffmpeg\download\Windows.ps1'
@@ -64,7 +64,7 @@ runs:
         cache_hit: ${{ steps.yt-dlp-FFmpeg-cache.outputs.cache-hit }}
         
     - name: Save yt-dlp/FFmpeg-Builds cache
-      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows') && (! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit || steps.yt-dlp-FFmpeg-cache.outputs.cache-hit == 'false')
+      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows') && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
       uses: actions/cache/save@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
@@ -98,7 +98,7 @@ runs:
         key: yt-dlp-${{ steps.version-unix-like.outputs.version || steps.version-windows.outputs.version }}-${{ runner.os }}
         
     - name: Download yt-dlp for Unix-like
-      if: (runner.os == 'Linux' || runner.os == 'macOS') && (! steps.cache.outputs.cache-hit || steps.cache.outputs.cache-hit == 'false')
+      if: (runner.os == 'Linux' || runner.os == 'macOS') && ! steps.cache.outputs.cache-hit
       shell: bash
       working-directory: ${{ runner.temp }}
       run: $GITHUB_ACTION_PATH/scripts/download/Unix-like.sh
@@ -107,7 +107,7 @@ runs:
         nightly: ${{ inputs.nightly }}
         
     - name: Download yt-dlp for Windows
-      if: runner.os == 'Windows' && (! steps.cache.outputs.cache-hit || steps.cache.outputs.cache-hit == 'false')
+      if: runner.os == 'Windows' && ! steps.cache.outputs.cache-hit
       shell: pwsh
       working-directory: ${{ runner.temp }}
       run: '& $env:GITHUB_ACTION_PATH\scripts\download\Windows.ps1'
@@ -122,7 +122,7 @@ runs:
         cache_hit: ${{ steps.cache.outputs.cache-hit }}
         
     - name: Save yt-dlp cache
-      if: "! steps.cache.outputs.cache-hit || steps.cache.outputs.cache-hit == 'false'"
+      if: '! steps.cache.outputs.cache-hit'
       uses: actions/cache/save@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp
