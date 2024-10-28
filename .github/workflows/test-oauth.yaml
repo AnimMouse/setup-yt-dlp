@@ -19,7 +19,7 @@ jobs:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
-          with-ffmpeg: true
+          with-ffmpeg: ${{ runner.os != 'macOS' }}
           
       - name: Setup yt-dlp YouTube OAuth using setup-yt-dlp/oauth
         uses: AnimMouse/setup-yt-dlp/oauth@main
