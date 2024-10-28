@@ -4,7 +4,7 @@ branding:
   icon: play-circle
   color: red
 inputs:
-  refresh_token:
+  refresh-token:
     description: OAuth refresh token encoded in Base64
     required: true
     
@@ -16,11 +16,11 @@ runs:
       shell: bash
       run: $GITHUB_ACTION_PATH/scripts/Unix-like.sh
       env:
-        refresh_token: ${{ inputs.refresh_token }}
+        refresh_token: ${{ inputs.refresh-token }}
         
     - name: Sign in to YouTube OAuth for Windows
       if: runner.os == 'Windows'
       shell: pwsh
       run: '& $env:GITHUB_ACTION_PATH\scripts\Windows.ps1'
       env:
-        refresh_token: ${{ inputs.refresh_token }}
+        refresh_token: ${{ inputs.refresh-token }}

@@ -4,7 +4,7 @@ branding:
   icon: play-circle
   color: red
 inputs:
-  refresh_token_secret_name:
+  refresh-token-secret-name:
     description: OAuth refresh token secret name on GitHub
     default: YOUTUBE_OAUTH_REFRESH_TOKEN
   token:
@@ -19,7 +19,7 @@ runs:
       shell: bash
       run: base64 < ~/.cache/yt-dlp/youtube/oauth_refresh_token_default.json | gh secret set "$refresh_token_secret_name"
       env:
-        refresh_token_secret_name: ${{ inputs.refresh_token_secret_name }}
+        refresh_token_secret_name: ${{ inputs.refresh-token-secret-name }}
         GITHUB_TOKEN: ${{ inputs.token }}
         GH_REPO: ${{ github.repository }}
         
@@ -28,6 +28,6 @@ runs:
       shell: pwsh
       run: '[Convert]::ToBase64String([IO.File]::ReadAllBytes("$env:USERPROFILE\.cache\yt-dlp\youtube\oauth_refresh_token_default.json")) | gh secret set "$env:refresh_token_secret_name"'
       env:
-        refresh_token_secret_name: ${{ inputs.refresh_token_secret_name }}
+        refresh_token_secret_name: ${{ inputs.refresh-token-secret-name }}
         GITHUB_TOKEN: ${{ inputs.token }}
         GH_REPO: ${{ github.repository }}
