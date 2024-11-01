@@ -11,7 +11,7 @@ To use `yt-dlp`, run this action before `yt-dlp`.
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     
   - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
 ```
@@ -22,7 +22,7 @@ To improve yt-dlp's handling of formats, like [merging `bestvideo+bestaudio` ins
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       with-ffmpeg: true
       
@@ -40,20 +40,20 @@ It is recommended to use [aria2](https://aria2.github.io) as the downloader for 
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       with-ffmpeg: true
       
   - run: yt-dlp --downloader aria2c https://www.youtube.com/watch?v=BaW_jenozKc
 ```
 
-## YouTube OAuth2
+## YouTube OAuth
 Currently, YouTube requires data center IP addresses to be signed in. The error `Sign in to confirm you’re not a bot. This helps protect our community. Learn more` appears.
 
-To bypass this, use the `AnimMouse/setup-yt-dlp/oauth2@v1` action to sign in and pass the OAuth credentials via the [coletdjnz/yt-dlp-youtube-oauth2](https://github.com/coletdjnz/yt-dlp-youtube-oauth2) plugin.\
-Follow the instructions at [coletdjnz/yt-dlp-youtube-oauth2](https://github.com/coletdjnz/yt-dlp-youtube-oauth2#logging-in) to get the token_data.json file.
+To bypass this, use the `AnimMouse/setup-yt-dlp/oauth@v2` action to sign in and pass the OAuth credentials.
+Follow the instructions at [yt-dlp wiki](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#logging-in-with-oauth) to get the oauth_refresh_token_default.json file.
 
-Encode the token_data.json file in Base64 using this command `base64 -w 0 token_data.json` and paste it to the `YOUTUBE_OAUTH2_TOKEN_DATA` secret. And add `--username oauth2 --password ''` to the command-line options.
+Encode the oauth_refresh_token_default.json file in Base64 using this command `base64 -w 0 oauth_refresh_token_default.json` and paste it to the `YOUTUBE_OAUTH_REFRESH_TOKEN` secret. And add `--username oauth --password ''` to the command-line options.
 
 > [!CAUTION]
 > Do not use your personal account for OAuth credentials. Use a dummy account, and create a brand account inside of it, and use that to sign in. This OAuth method may result in your account being [blocked](https://github.com/yt-dlp/yt-dlp/issues/10085).
@@ -61,27 +61,26 @@ Encode the token_data.json file in Base64 using this command `base64 -w 0 token_
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       with-ffmpeg: true
-      nightly: true
       
-  - name: Setup yt-dlp-youtube-oauth2 plugin
-    uses: AnimMouse/setup-yt-dlp/oauth2@v1
+  - name: Setup yt-dlp YouTube OAuth
+    uses: AnimMouse/setup-yt-dlp/oauth@v2
     with:
-      token-data: ${{ secrets.YOUTUBE_OAUTH2_TOKEN_DATA }}
+      refresh-token: ${{ secrets.YOUTUBE_OAUTH_REFRESH_TOKEN }}
       
-  - run: yt-dlp --downloader aria2c --username oauth2 --password '' https://www.youtube.com/watch?v=BaW_jenozKc
+  - run: yt-dlp --downloader aria2c --username oauth --password '' https://www.youtube.com/watch?v=BaW_jenozKc
 ```
 
 ### Specific version
-You can specify the version you want. By default, this action downloads the latest version if version is not specified.
+You can specify the version you want. By default, this action downloads the latest version if the version is not specified.
 
 #### Specific stable
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       version: 2022.02.04
 ```
@@ -90,7 +89,7 @@ steps:
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       nightly: true
 ```
@@ -99,19 +98,19 @@ steps:
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       version: 2024.02.04.232659
       nightly: true
 ```
 
 ### GitHub token
-This action automatically uses a GitHub token in order to authenticate with GitHub API and avoid rate limiting. You can also specify your own read-only fine-grained personal access token.
+This action automatically uses a GitHub token in order to authenticate with the GitHub API and avoid rate limiting. You can also specify your own read-only fine-grained personal access token.
 
 ```yaml
 steps:
   - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v1
+    uses: AnimMouse/setup-yt-dlp@v2
     with:
       token: ${{ secrets.GH_PAT }}
 ```
