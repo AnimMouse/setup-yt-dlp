@@ -73,6 +73,32 @@ steps:
   - run: yt-dlp --downloader aria2c --username oauth --password '' https://www.youtube.com/watch?v=BaW_jenozKc
 ```
 
+### OAuth update token
+OAuth tokens have expiration, which means it has to be refreshed, or else it will expire and it will not work anymore. To prevent expiration, yt-dlp automatically refreshes the token as needed. To update that token in GitHub secrets, use the `AnimMouse/setup-yt-dlp/oauth/update-token@v2` action to update the token.
+
+This requires a fine-grained personal access token that has read and write access to the secrets scope in the current repository to update the secret as the default `GITHUB_TOKEN` does not have access to the secrets scope.
+
+```yaml
+steps:
+  - name: Setup yt-dlp
+    uses: AnimMouse/setup-yt-dlp@v2
+    with:
+      with-ffmpeg: true
+      
+  - name: Setup yt-dlp YouTube OAuth
+    uses: AnimMouse/setup-yt-dlp/oauth@v2
+    with:
+      refresh-token: ${{ secrets.YOUTUBE_OAUTH_REFRESH_TOKEN }}
+      
+  - run: yt-dlp --downloader aria2c --username oauth --password '' https://www.youtube.com/watch?v=BaW_jenozKc
+    
+  - name: Update yt-dlp YouTube OAuth refresh token
+    uses: AnimMouse/setup-yt-dlp/oauth/update-token@v2
+    with:
+      refresh-token-secret-name: YOUTUBE_OAUTH_REFRESH_TOKEN
+      token: ${{ secrets.GH_PAT }}
+```
+
 ### Specific version
 You can specify the version you want. By default, this action downloads the latest version if the version is not specified.
 
