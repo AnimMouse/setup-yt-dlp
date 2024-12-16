@@ -7,6 +7,9 @@ inputs:
   cookies:
     description: cookies.txt encoded in Base64
     required: true
+  enable:
+    description: Use cookies by writing to yt-dlp config
+    default: true
     
 runs:
   using: composite
@@ -14,13 +17,23 @@ runs:
     - name: Sign in to YouTube using cookies for Unix-like
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: $GITHUB_ACTION_PATH/scripts/Unix-like.sh
+      run: $GITHUB_ACTION_PATH/scripts/sign-in/Unix-like.sh
       env:
         cookies: ${{ inputs.cookies }}
         
     - name: Sign in to YouTube using cookies for Windows
       if: runner.os == 'Windows'
       shell: pwsh
-      run: '& $env:GITHUB_ACTION_PATH\scripts\Windows.ps1'
+      run: '& $env:GITHUB_ACTION_PATH\scripts\sign-in\Windows.ps1'
       env:
         cookies: ${{ inputs.cookies }}
+        
+    - name: Enable YouTube cookies for Unix-like
+      if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.enable != 'false'
+      shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/enable/Unix-like.sh
+      
+    - name: Enable YouTube cookies for Windows
+      if: runner.os == 'Windows' && inputs.enable != 'false'
+      shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\enable\Windows.ps1'
