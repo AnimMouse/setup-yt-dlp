@@ -7,6 +7,9 @@ inputs:
   install_ffmpeg:
     description: Install yt-dlp/FFmpeg-Builds for yt-dlp
     default: true
+  aria2:
+    description: Use aria2 by writing to yt-dlp config
+    default: true
   version:
     description: yt-dlp version
     default: latest
@@ -81,3 +84,13 @@ runs:
       with:
         path: ${{ runner.tool_cache }}/yt-dlp
         key: yt-dlp-${{ steps.version-unix-like.outputs.version || steps.version-windows.outputs.version }}-${{ runner.os }}
+        
+    - name: Enable yt-dlp aria2 for Unix-like
+      if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.aria2 != 'false'
+      shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/aria2/Unix-like.sh
+      
+    - name: Enable yt-dlp aria2 for Windows
+      if: runner.os == 'Windows' && inputs.aria2 != 'false'
+      shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\aria2\Windows.ps1'
