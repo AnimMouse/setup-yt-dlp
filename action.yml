@@ -4,9 +4,9 @@ branding:
   icon: play-circle
   color: red
 inputs:
-  with-ffmpeg:
+  install_ffmpeg:
     description: Install yt-dlp/FFmpeg-Builds for yt-dlp
-    default: false
+    default: true
   version:
     description: yt-dlp version
     default: latest
@@ -20,56 +20,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get yt-dlp/FFmpeg-Builds release ID for Linux
-      id: yt-dlp-ffmpeg-release-id-unix-like
-      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'macOS')
-      shell: bash
-      run: $GITHUB_ACTION_PATH/scripts/yt-dlp-ffmpeg/release-id/Linux.sh
-      env:
-        GITHUB_TOKEN: ${{ inputs.token }}
-        
-    - name: Get yt-dlp/FFmpeg-Builds release ID for Windows
-      id: yt-dlp-ffmpeg-release-id-windows
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows'
-      shell: pwsh
-      run: '& $env:GITHUB_ACTION_PATH\scripts\yt-dlp-ffmpeg\release-id\Windows.ps1'
-      env:
-        GITHUB_TOKEN: ${{ inputs.token }}
-        
-    - name: Restore yt-dlp/FFmpeg-Builds cache
-      id: yt-dlp-FFmpeg-cache
-      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
-      uses: actions/cache/restore@v4
-      with:
-        path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
-        key: yt-dlp-FFmpeg-${{ steps.yt-dlp-ffmpeg-release-id-unix-like.outputs.release_id || steps.yt-dlp-ffmpeg-release-id-windows.outputs.release_id }}-${{ runner.os }}
-        
-    - name: Download yt-dlp/FFmpeg-Builds for Linux
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'Linux' && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
-      shell: bash
-      working-directory: ${{ runner.temp }}
-      run: $GITHUB_ACTION_PATH/scripts/yt-dlp-ffmpeg/download/Linux.sh
+    - name: Install yt-dlp/FFmpeg-Builds
+      if: runner.os != 'macOS' && inputs.install_ffmpeg != 'false'
+      uses: AnimMouse/setup-yt-dlp/ffmpeg@main
       
-    - name: Download yt-dlp/FFmpeg-Builds for Windows
-      if: inputs.with-ffmpeg == 'true' && runner.os == 'Windows' && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
-      shell: pwsh
-      working-directory: ${{ runner.temp }}
-      run: '& $env:GITHUB_ACTION_PATH\scripts\yt-dlp-ffmpeg\download\Windows.ps1'
-      
-    - name: Install yt-dlp/FFmpeg-Builds on tool cache
-      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows')
-      uses: AnimMouse/tool-cache@v1
-      with:
-        folder_name: yt-dlp-FFmpeg
-        cache_hit: ${{ steps.yt-dlp-FFmpeg-cache.outputs.cache-hit }}
-        
-    - name: Save yt-dlp/FFmpeg-Builds cache
-      if: inputs.with-ffmpeg == 'true' && (runner.os == 'Linux' || runner.os == 'Windows') && ! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit
-      uses: actions/cache/save@v4
-      with:
-        path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
-        key: yt-dlp-FFmpeg-${{ steps.yt-dlp-ffmpeg-release-id-unix-like.outputs.release_id || steps.yt-dlp-ffmpeg-release-id-windows.outputs.release_id }}-${{ runner.os }}
-        
     - name: Get yt-dlp version for Unix-like
       id: version-unix-like
       if: runner.os == 'Linux' || runner.os == 'macOS'

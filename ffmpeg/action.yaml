@@ -1,0 +1,60 @@
+name: Setup yt-dlp/FFmpeg-Builds
+description: Setup/Install yt-dlp/FFmpeg-Builds for GitHub Actions
+branding:
+  icon: play-circle
+  color: green
+inputs:
+  token:
+    description: GitHub token to avoid API rate limiting
+    default: ${{ github.token }}
+    
+runs:
+  using: composite
+  steps:
+    - name: Get yt-dlp/FFmpeg-Builds release ID for Linux
+      id: release-id-linux
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/release-id/Linux.sh
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        
+    - name: Get yt-dlp/FFmpeg-Builds release ID for Windows
+      id: release-id-windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\release-id\Windows.ps1'
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        
+    - name: Restore yt-dlp/FFmpeg-Builds cache
+      id: cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
+        key: yt-dlp-FFmpeg-${{ steps.release-id-linux.outputs.release_id || steps.release-id-windows.outputs.release_id }}-${{ runner.os }}
+        
+    - name: Download yt-dlp/FFmpeg-Builds for Linux
+      if: runner.os == 'Linux' && ! steps.cache.outputs.cache-hit
+      shell: bash
+      working-directory: ${{ runner.temp }}
+      run: $GITHUB_ACTION_PATH/scripts/download/Linux.sh
+      
+    - name: Download yt-dlp/FFmpeg-Builds for Windows
+      if: runner.os == 'Windows' && ! steps.cache.outputs.cache-hit
+      shell: pwsh
+      working-directory: ${{ runner.temp }}
+      run: '& $env:GITHUB_ACTION_PATH\scripts\download\Windows.ps1'
+      
+    - name: Install yt-dlp/FFmpeg-Builds on tool cache
+      uses: AnimMouse/tool-cache@v1
+      with:
+        folder_name: yt-dlp-FFmpeg
+        cache_hit: ${{ steps.cache.outputs.cache-hit }}
+        
+    - name: Save yt-dlp/FFmpeg-Builds cache
+      if: '! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
+        key: yt-dlp-FFmpeg-${{ steps.release-id-linux.outputs.release_id || steps.release-id-windows.outputs.release_id }}-${{ runner.os }}
