@@ -1,0 +1,21 @@
+name: Test setup-yt-dlp/ffmpeg
+on:
+  push:
+    paths:
+      - ffmpeg/**
+      - .github/workflows/test-ffmpeg.yaml
+      
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        
+    steps:
+      - name: Setup yt-dlp-FFmpeg using setup-yt-dlp/ffmpeg
+        uses: AnimMouse/setup-yt-dlp/ffmpeg@main
+        
+      - name: Test yt-dlp-FFmpeg by checking version
+        run: ffmpeg -version

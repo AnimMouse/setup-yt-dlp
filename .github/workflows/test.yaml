@@ -5,11 +5,6 @@ on:
       - action.yml
       - scripts/**
       - .github/workflows/test.yaml
-  pull_request:
-    paths:
-      - action.yml
-      - scripts/**
-      - .github/workflows/test.yaml
       
 jobs:
   test:
@@ -18,12 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        ffmpeg: [without-ffmpeg, with-ffmpeg]
         version: [latest, "${{ vars.SPECIFIED_VERSION }}", "${{ vars.SPECIFIED_VERSION_NIGHTLY }}"]
         nightly: [stable, nightly]
         exclude:
-          - os: macos-latest
-            ffmpeg: with-ffmpeg
           - version: ${{ vars.SPECIFIED_VERSION }}
             nightly: nightly
           - version: ${{ vars.SPECIFIED_VERSION_NIGHTLY }}
@@ -33,23 +25,9 @@ jobs:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
-          with-ffmpeg: ${{ matrix.ffmpeg == 'with-ffmpeg' }}
+          install_ffmpeg: false
           version: ${{ matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
-      - name: Test yt-dlp-FFmpeg by checking version
-        if: matrix.ffmpeg == 'with-ffmpeg'
-        run: ffmpeg -version
-        
       - name: Test yt-dlp by checking version
         run: yt-dlp --version
-        
-#      - name: Test yt-dlp by downloading a test video
-#        run: yt-dlp -P yt-dlp-test-video https://www.youtube.com/watch?v=BaW_jenozKc
-#        
-#      - name: Upload yt-dlp test video
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: yt-dlp ${{ matrix.version }} ${{ matrix.ffmpeg }} using ${{ matrix.downloader }} on ${{ runner.os }} test video
-#          path: yt-dlp-test-video
-#          if-no-files-found: error
