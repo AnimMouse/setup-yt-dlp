@@ -4,7 +4,7 @@ branding:
   icon: play-circle
   color: red
 inputs:
-  install_ffmpeg:
+  ffmpeg:
     description: Install yt-dlp/FFmpeg-Builds for yt-dlp
     default: true
   aria2:
@@ -24,7 +24,7 @@ runs:
   using: composite
   steps:
     - name: Install yt-dlp/FFmpeg-Builds
-      if: runner.os != 'macOS' && inputs.install_ffmpeg != 'false'
+      if: runner.os != 'macOS' && inputs.ffmpeg != 'false'
       uses: AnimMouse/setup-yt-dlp/ffmpeg@main
       
     - name: Get yt-dlp version for Unix-like

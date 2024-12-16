@@ -25,7 +25,6 @@ jobs:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
-          install_ffmpeg: false
           version: ${{ matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
