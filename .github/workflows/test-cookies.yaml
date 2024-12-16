@@ -1,0 +1,41 @@
+name: Test setup-yt-dlp/cookies
+on:
+  push:
+    paths:
+      - cookies/**
+      - .github/workflows/test-cookies.yaml
+      
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
+    steps:
+      - name: Setup yt-dlp using setup-yt-dlp
+        uses: AnimMouse/setup-yt-dlp@main
+        with:
+          with-ffmpeg: ${{ runner.os != 'macOS' }}
+          
+      - name: Setup yt-dlp YouTube cookies using setup-yt-dlp/cookies
+        uses: AnimMouse/setup-yt-dlp/cookies@main
+        with:
+          cookies: ${{ secrets.YOUTUBE_COOKIES }}
+          
+      - name: Test yt-dlp by downloading a test video
+        run: yt-dlp -P yt-dlp-test-video ${{ vars.YT_DLP_TEST_VIDEO }}
+        
+      - name: Update yt-dlp YouTube cookies using setup-yt-dlp/cookies/update
+        uses: AnimMouse/setup-yt-dlp/cookies/update@main
+        with:
+          token: ${{ secrets.GH_PAT }}
+          
+      - name: Upload yt-dlp test video
+        uses: actions/upload-artifact@v4
+        with:
+          name: yt-dlp test video ${{ runner.os }}
+          path: yt-dlp-test-video
+          if-no-files-found: error
