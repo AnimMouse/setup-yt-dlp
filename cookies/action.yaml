@@ -1,0 +1,26 @@
+name: Setup yt-dlp YouTube cookies
+description: Setup YouTube cookies for GitHub Actions
+branding:
+  icon: play-circle
+  color: red
+inputs:
+  cookies:
+    description: cookies.txt encoded in Base64
+    required: true
+    
+runs:
+  using: composite
+  steps:
+    - name: Sign in to YouTube using cookies for Unix-like
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/Unix-like.sh
+      env:
+        cookies: ${{ inputs.cookies }}
+        
+    - name: Sign in to YouTube using cookies for Windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\Windows.ps1'
+      env:
+        cookies: ${{ inputs.cookies }}

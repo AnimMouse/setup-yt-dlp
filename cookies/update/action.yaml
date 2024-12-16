@@ -1,0 +1,33 @@
+name: Update yt-dlp YouTube cookies
+description: Update YouTube cookies for GitHub Actions
+branding:
+  icon: play-circle
+  color: red
+inputs:
+  cookies_secret_name:
+    description: cookies.txt secret name on GitHub
+    default: YOUTUBE_COOKIES
+  token:
+    description: GitHub personal access token that has read and write access to secrets scope to update secret
+    required: true
+    
+runs:
+  using: composite
+  steps:
+    - name: Update YouTube cookies for Unix-like
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: base64 < ~/.cache/yt-dlp/youtube/cookies.txt | gh secret set "$cookies_secret_name"
+      env:
+        cookies_secret_name: ${{ inputs.cookies_secret_name }}
+        GITHUB_TOKEN: ${{ inputs.token }}
+        GH_REPO: ${{ github.repository }}
+        
+    - name: Update YouTube cookies for Windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: '[Convert]::ToBase64String([IO.File]::ReadAllBytes("$env:USERPROFILE\.cache\yt-dlp\youtube\cookies.txt")) | gh secret set "$env:cookies_secret_name"'
+      env:
+        cookies_secret_name: ${{ inputs.cookies_secret_name }}
+        GITHUB_TOKEN: ${{ inputs.token }}
+        GH_REPO: ${{ github.repository }}
