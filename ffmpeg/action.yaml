@@ -53,7 +53,7 @@ runs:
         cache_hit: ${{ steps.cache.outputs.cache-hit }}
         
     - name: Save yt-dlp/FFmpeg-Builds cache
-      if: '! steps.yt-dlp-FFmpeg-cache.outputs.cache-hit'
+      if: '! steps.cache.outputs.cache-hit'
       uses: actions/cache/save@v4
       with:
         path: ${{ runner.tool_cache }}/yt-dlp-FFmpeg
