@@ -6,7 +6,7 @@ branding:
 inputs:
   cookies_secret_name:
     description: cookies.txt secret name on GitHub
-    default: YOUTUBE_COOKIES
+    required: true
   token:
     description: GitHub personal access token that has read and write access to secrets scope to update secret
     required: true

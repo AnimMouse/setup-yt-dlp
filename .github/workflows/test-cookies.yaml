@@ -29,6 +29,7 @@ jobs:
       - name: Update yt-dlp YouTube cookies using setup-yt-dlp/cookies/update
         uses: AnimMouse/setup-yt-dlp/cookies/update@main
         with:
+          cookies_secret_name: YOUTUBE_COOKIES
           token: ${{ secrets.GH_PAT }}
           
       - name: Upload yt-dlp test video
