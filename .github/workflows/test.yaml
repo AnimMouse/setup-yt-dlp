@@ -5,6 +5,7 @@ on:
       - action.yml
       - scripts/**
       - .github/workflows/test.yaml
+      - ffmpeg/**
       
 jobs:
   test:
@@ -13,9 +14,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        ffmpeg: [true, false]
+        aria2: [true, false]
         version: [latest, "${{ vars.SPECIFIED_VERSION }}", "${{ vars.SPECIFIED_VERSION_NIGHTLY }}"]
         nightly: [stable, nightly]
         exclude:
+          - os: macos-latest
+            ffmpeg: 'true'
           - version: ${{ vars.SPECIFIED_VERSION }}
             nightly: nightly
           - version: ${{ vars.SPECIFIED_VERSION_NIGHTLY }}
@@ -25,8 +30,14 @@ jobs:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
+          ffmpeg: ${{ matrix.ffmpeg }}
+          aria2: ${{ matrix.aria2 }}
           version: ${{ matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
+      - name: Test yt-dlp-FFmpeg by checking version
+        if: matrix.ffmpeg == 'true'
+        run: ffmpeg -version
+        
       - name: Test yt-dlp by checking version
         run: yt-dlp --version

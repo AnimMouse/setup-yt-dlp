@@ -17,9 +17,7 @@ jobs:
     steps:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
-        with:
-          with-ffmpeg: ${{ runner.os != 'macOS' }}
-          
+        
       - name: Setup yt-dlp YouTube cookies using setup-yt-dlp/cookies
         uses: AnimMouse/setup-yt-dlp/cookies@main
         with:
