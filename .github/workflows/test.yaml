@@ -14,13 +14,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        ffmpeg: [true, false]
-        aria2: [true, false]
+        ffmpeg: [ffmpeg, no-ffmpeg]
+        aria2: [aria2, no-aria2]
         version: [latest, "${{ vars.SPECIFIED_VERSION }}", "${{ vars.SPECIFIED_VERSION_NIGHTLY }}"]
         nightly: [stable, nightly]
         exclude:
           - os: macos-latest
-            ffmpeg: 'true'
+            ffmpeg: ffmpeg
           - version: ${{ vars.SPECIFIED_VERSION }}
             nightly: nightly
           - version: ${{ vars.SPECIFIED_VERSION_NIGHTLY }}
@@ -30,14 +30,22 @@ jobs:
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
-          ffmpeg: ${{ matrix.ffmpeg }}
-          aria2: ${{ matrix.aria2 }}
+          ffmpeg: ${{ matrix.ffmpeg == 'ffmpeg' }}
+          aria2: ${{ matrix.aria2 == 'aria2' }}
           version: ${{ matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
       - name: Test yt-dlp-FFmpeg by checking version
-        if: matrix.ffmpeg == 'true'
+        if: matrix.ffmpeg == 'ffmpeg'
         run: ffmpeg -version
         
       - name: Test yt-dlp by checking version
         run: yt-dlp --version
+        
+      - name: Test yt-dlp aria2 by checking config file on Unix-like
+        if: (runner.os == 'Linux' || runner.os == 'macOS') && matrix.aria2 == 'aria2'
+        run: cat ~/.config/yt-dlp/config
+        
+      - name: Test yt-dlp aria2 by checking config file on Windows
+        if: runner.os == 'Windows' && matrix.aria2 == 'aria2'
+        run: Get-Content $env:APPDATA\yt-dlp\config
