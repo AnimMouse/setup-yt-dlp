@@ -67,7 +67,7 @@ steps:
     uses: AnimMouse/setup-yt-dlp@v3
     
   - name: Setup yt-dlp YouTube cookies
-    uses: AnimMouse/setup-yt-dlp/oauth@v3
+    uses: AnimMouse/setup-yt-dlp/cookies@v3
     with:
       cookies: ${{ secrets.YOUTUBE_COOKIES }}
       
@@ -85,7 +85,7 @@ steps:
     uses: AnimMouse/setup-yt-dlp@v3
     
   - name: Setup yt-dlp YouTube cookies
-    uses: AnimMouse/setup-yt-dlp/oauth@v3
+    uses: AnimMouse/setup-yt-dlp/cookies@v3
     with:
       cookies: ${{ secrets.YOUTUBE_COOKIES }}
       enable: false
