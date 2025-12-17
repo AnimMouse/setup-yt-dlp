@@ -21,23 +21,34 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         ffmpeg: [ffmpeg, no-ffmpeg]
         aria2: [aria2, no-aria2]
-        version: [latest, "${{ vars.SPECIFIED_VERSION }}", "${{ vars.SPECIFIED_VERSION_NIGHTLY }}"]
+        ejs-node: [ejs-node, no-ejs-node]
+        version: [latest, specified-version]
         nightly: [stable, nightly]
         exclude:
           - os: macos-latest
             ffmpeg: ffmpeg
-          - version: ${{ vars.SPECIFIED_VERSION }}
-            nightly: nightly
-          - version: ${{ vars.SPECIFIED_VERSION_NIGHTLY }}
-            nightly: stable
             
     steps:
+      - name: Get yt-dlp penultimate version
+        id: penultimate
+        if: matrix.version == 'specified-version'
+        run: |
+          if [[ ${{ matrix.nightly }} == nightly ]]
+          then
+            echo version=$(gh api repos/yt-dlp/yt-dlp-nightly-builds/releases -q .[1].tag_name) >> $GITHUB_OUTPUT
+          else
+            echo version=$(gh api repos/yt-dlp/yt-dlp/releases -q .[1].tag_name) >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
           ffmpeg: ${{ matrix.ffmpeg == 'ffmpeg' }}
           aria2: ${{ matrix.aria2 == 'aria2' }}
-          version: ${{ matrix.version }}
+          ejs-node: ${{ matrix.ejs-node == 'ejs-node' }}
+          version: ${{ matrix.version == 'specified-version' && steps.penultimate.outputs.version || matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
       - name: Test yt-dlp-FFmpeg by checking version
@@ -47,10 +58,10 @@ jobs:
       - name: Test yt-dlp by checking version
         run: yt-dlp --version
         
-      - name: Test yt-dlp aria2 by checking config file on Unix-like
-        if: (runner.os == 'Linux' || runner.os == 'macOS') && matrix.aria2 == 'aria2'
+      - name: Test yt-dlp config file on Unix-like
+        if: (runner.os == 'Linux' || runner.os == 'macOS') && (matrix.aria2 == 'aria2' || matrix.ejs-node == 'ejs-node')
         run: cat ~/.config/yt-dlp/config
         
-      - name: Test yt-dlp aria2 by checking config file on Windows
-        if: runner.os == 'Windows' && matrix.aria2 == 'aria2'
+      - name: Test yt-dlp config file on Windows
+        if: runner.os == 'Windows' && (matrix.aria2 == 'aria2' || matrix.ejs-node == 'ejs-node')
         run: Get-Content $env:APPDATA\yt-dlp\config
