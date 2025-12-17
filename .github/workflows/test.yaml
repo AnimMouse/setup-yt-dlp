@@ -1,12 +1,17 @@
 name: Test setup-yt-dlp
 on:
   push:
+    branches:
+      - main
     paths:
       - action.yml
       - scripts/**
       - .github/workflows/test.yaml
       - ffmpeg/**
-      
+  schedule:
+    - cron: '7 11 1 * *'
+  workflow_dispatch:
+  
 jobs:
   test:
     runs-on: ${{ matrix.os }}

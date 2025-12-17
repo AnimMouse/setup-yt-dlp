@@ -1,10 +1,15 @@
 name: Test setup-yt-dlp/cookies
 on:
   push:
+    branches:
+      - main
     paths:
       - cookies/**
       - .github/workflows/test-cookies.yaml
-      
+  schedule:
+    - cron: '7 11 1 * *'
+  workflow_dispatch:
+  
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -33,7 +38,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           
       - name: Upload yt-dlp test video
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: yt-dlp test video ${{ runner.os }}
           path: yt-dlp-test-video
