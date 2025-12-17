@@ -10,6 +10,9 @@ inputs:
   aria2:
     description: Use aria2 by writing to yt-dlp config
     default: true
+  ejs-node:
+    description: Use EJS Node by writing to yt-dlp config
+    default: true
   version:
     description: yt-dlp version
     default: latest
@@ -96,3 +99,13 @@ runs:
       if: runner.os == 'Windows' && inputs.aria2 != 'false'
       shell: pwsh
       run: '& $env:GITHUB_ACTION_PATH\scripts\aria2\Windows.ps1'
+      
+    - name: Enable yt-dlp EJS Node for Unix-like
+      if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.ejs-node != 'false'
+      shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/ejs-node/Unix-like.sh
+      
+    - name: Enable yt-dlp EJS Node for Windows
+      if: runner.os == 'Windows' && inputs.ejs-node != 'false'
+      shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\ejs-node\Windows.ps1'
