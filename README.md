@@ -13,7 +13,7 @@ steps:
   - name: Setup yt-dlp
     uses: AnimMouse/setup-yt-dlp@v3
     
-  - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
+  - run: yt-dlp https://www.youtube.com/watch?v=DTi8wZ1a1TA
 ```
 
 ## FFmpeg
@@ -49,6 +49,21 @@ steps:
       aria2: false
 ```
 
+## EJS Node
+It is recommended to use [yt-dlp-ejs](https://github.com/yt-dlp/ejs) in order to solve JavaScript challenges presented by YouTube using Node, this will improve the YouTube downloading process and Node is already preinstalled in GitHub Actions.\
+By default, this action will write to yt-dlp config to use EJS Node automatically.
+
+### Disable
+If you don't want to use EJS Node, set `ejs-node` to `false`.
+
+```yaml
+steps:
+  - name: Setup yt-dlp
+    uses: AnimMouse/setup-yt-dlp@v3
+    with:
+      ejs-node: false
+```
+
 ## YouTube cookies
 Currently, YouTube requires data center IP addresses to be signed in.\
 The error `Sign in to confirm you’re not a bot. This helps protect our community. Learn more` appears.
@@ -71,10 +86,10 @@ steps:
     with:
       cookies: ${{ secrets.YOUTUBE_COOKIES }}
       
-  - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
+  - run: yt-dlp https://www.youtube.com/watch?v=DTi8wZ1a1TA
 ```
 
-By default, this action will write to yt-dlp config to pass cookies automatically
+By default, this action will write to yt-dlp config to pass cookies automatically.
 
 ### Disable
 If you don't want to pass cookies automatically, set `enable` to `false`.
@@ -90,7 +105,7 @@ steps:
       cookies: ${{ secrets.YOUTUBE_COOKIES }}
       enable: false
       
-  - run: yt-dlp --cookies ~/.cache/yt-dlp/youtube/cookies.txt https://www.youtube.com/watch?v=BaW_jenozKc
+  - run: yt-dlp --cookies ~/.cache/yt-dlp/youtube/cookies.txt https://www.youtube.com/watch?v=DTi8wZ1a1TA
 ```
 
 ### Update cookies
@@ -109,7 +124,7 @@ steps:
     with:
       cookies: ${{ secrets.YOUTUBE_COOKIES }}
       
-  - run: yt-dlp https://www.youtube.com/watch?v=BaW_jenozKc
+  - run: yt-dlp https://www.youtube.com/watch?v=DTi8wZ1a1TA
     
   - name: Update yt-dlp YouTube cookies
     uses: AnimMouse/setup-yt-dlp/cookies/update@v3
