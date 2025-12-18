@@ -29,9 +29,9 @@ jobs:
             ffmpeg: ffmpeg
             
     steps:
-      - name: Get yt-dlp penultimate version
-        id: penultimate
-        if: matrix.version == 'specified-version'
+      - name: Get yt-dlp penultimate version on Unix-like
+        id: penultimate-unix-like
+        if: (runner.os == 'Linux' || runner.os == 'macOS') && matrix.version == 'specified-version'
         run: |
           if [[ ${{ matrix.nightly }} == nightly ]]
           then
@@ -42,13 +42,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           
+      - name: Get yt-dlp penultimate version on Windows
+        id: penultimate-windows
+        if: runner.os == 'Windows' && matrix.version == 'specified-version'
+        run: |
+          if ('${{ matrix.nightly }}' -eq 'nightly') {
+            $version = (gh api repos/yt-dlp/yt-dlp-nightly-builds/releases -q .[1].tag_name)
+          }
+          else {
+            $version = (gh api repos/yt-dlp/yt-dlp/releases -q .[1].tag_name)
+          }
+          Add-Content $env:GITHUB_OUTPUT version=$version
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          
       - name: Setup yt-dlp using setup-yt-dlp
         uses: AnimMouse/setup-yt-dlp@main
         with:
           ffmpeg: ${{ matrix.ffmpeg == 'ffmpeg' }}
           aria2: ${{ matrix.aria2 == 'aria2' }}
           ejs-node: ${{ matrix.ejs-node == 'ejs-node' }}
-          version: ${{ matrix.version == 'specified-version' && steps.penultimate.outputs.version || matrix.version }}
+          version: ${{ matrix.version == 'specified-version' && (steps.penultimate-unix-like.outputs.version || steps.penultimate-windows.outputs.version) || matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
       - name: Test yt-dlp-FFmpeg by checking version
