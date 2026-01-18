@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - action.yml
+      - action.yaml
       - scripts/**
       - .github/workflows/test.yaml
       - ffmpeg/**
@@ -22,7 +22,7 @@ jobs:
         ffmpeg: [ffmpeg, no-ffmpeg]
         aria2: [aria2, no-aria2]
         ejs-node: [ejs-node, no-ejs-node]
-        version: [latest, specified-version]
+        version: [latest, specified]
         nightly: [stable, nightly]
         exclude:
           - os: macos-latest
@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Get yt-dlp penultimate version on Unix-like
         id: penultimate-unix-like
-        if: (runner.os == 'Linux' || runner.os == 'macOS') && matrix.version == 'specified-version'
+        if: (runner.os == 'Linux' || runner.os == 'macOS') && matrix.version == 'specified'
         run: |
           if [[ ${{ matrix.nightly }} == nightly ]]
           then
@@ -44,7 +44,7 @@ jobs:
           
       - name: Get yt-dlp penultimate version on Windows
         id: penultimate-windows
-        if: runner.os == 'Windows' && matrix.version == 'specified-version'
+        if: runner.os == 'Windows' && matrix.version == 'specified'
         run: |
           if ('${{ matrix.nightly }}' -eq 'nightly') {
             $version = (gh api repos/yt-dlp/yt-dlp-nightly-builds/releases -q .[1].tag_name)
@@ -62,7 +62,7 @@ jobs:
           ffmpeg: ${{ matrix.ffmpeg == 'ffmpeg' }}
           aria2: ${{ matrix.aria2 == 'aria2' }}
           ejs-node: ${{ matrix.ejs-node == 'ejs-node' }}
-          version: ${{ matrix.version == 'specified-version' && (steps.penultimate-unix-like.outputs.version || steps.penultimate-windows.outputs.version) || matrix.version }}
+          version: ${{ matrix.version == 'specified' && (steps.penultimate-unix-like.outputs.version || steps.penultimate-windows.outputs.version) || matrix.version }}
           nightly: ${{ matrix.nightly == 'nightly' }}
           
       - name: Test yt-dlp-FFmpeg by checking version
