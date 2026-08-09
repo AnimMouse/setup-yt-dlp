@@ -1,3 +1,5 @@
+
+
 # Setup yt-dlp for GitHub Actions
 Setup [yt-dlp](https://github.com/yt-dlp/yt-dlp) (a [youtube-dl](https://github.com/ytdl-org/youtube-dl) fork) on GitHub Actions to use `yt-dlp`.
 
@@ -62,6 +64,17 @@ steps:
     uses: AnimMouse/setup-yt-dlp@v3
     with:
       ejs-node: false
+```
+
+## GitHub token
+This action automatically uses a GitHub token in order to authenticate with the GitHub API and avoid rate limiting. You can also specify your own read-only fine-grained personal access token.
+
+```yaml
+steps:
+  - name: Setup yt-dlp
+    uses: AnimMouse/setup-yt-dlp@v3
+    with:
+      token: ${{ secrets.GH_PAT }}
 ```
 
 ## YouTube cookies
@@ -162,15 +175,4 @@ steps:
     with:
       version: 2024.02.04.232659
       nightly: true
-```
-
-### GitHub token
-This action automatically uses a GitHub token in order to authenticate with the GitHub API and avoid rate limiting. You can also specify your own read-only fine-grained personal access token.
-
-```yaml
-steps:
-  - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v3
-    with:
-      token: ${{ secrets.GH_PAT }}
 ```
