@@ -1,5 +1,3 @@
-
-
 # Setup yt-dlp for GitHub Actions
 Setup [yt-dlp](https://github.com/yt-dlp/yt-dlp) (a [youtube-dl](https://github.com/ytdl-org/youtube-dl) fork) on GitHub Actions to use `yt-dlp`.
 
