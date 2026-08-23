@@ -64,6 +64,17 @@ steps:
       ejs-node: false
 ```
 
+## GitHub token
+This action automatically uses a GitHub token in order to authenticate with the GitHub API and avoid rate limiting. You can also specify your own read-only fine-grained personal access token.
+
+```yaml
+steps:
+  - name: Setup yt-dlp
+    uses: AnimMouse/setup-yt-dlp@v3
+    with:
+      token: ${{ secrets.GH_PAT }}
+```
+
 ## YouTube cookies
 Currently, YouTube requires data center IP addresses to be signed in.\
 The error `Sign in to confirm you’re not a bot. This helps protect our community. Learn more` appears.
@@ -162,15 +173,4 @@ steps:
     with:
       version: 2024.02.04.232659
       nightly: true
-```
-
-### GitHub token
-This action automatically uses a GitHub token in order to authenticate with the GitHub API and avoid rate limiting. You can also specify your own read-only fine-grained personal access token.
-
-```yaml
-steps:
-  - name: Setup yt-dlp
-    uses: AnimMouse/setup-yt-dlp@v3
-    with:
-      token: ${{ secrets.GH_PAT }}
 ```
